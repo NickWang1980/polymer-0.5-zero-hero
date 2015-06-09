@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="generator" content="CoffeeCup HTML Editor (www.coffeecup.com)">
+    <meta name="dcterms.created" content="Fri, 27 Jun 2014 21:02:23 GMT">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title></title>
+
+    <!--[if IE]>
+    <script src="HTML5.js"></script>
+    <![endif]-->
+    <style>
+        #dragdropframe {
+            position:absolute;
+            top:0; right:0;
+            bottom:0; left:0;
+            border: 2px solid rgba(0, 0, 0, 0.5);
+        }
+
+        #div1 {
+            position: relative;
+            left: 0;
+            top: 0; /* set these so Chrome doesn't return 'auto' from getComputedStyle */
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.66);
+            border: 2px solid rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            padding: 8px;
+        }
+        body {
+            position: relative;
+            -webkit-user-select: none;
+        }
+        .content > * {
+            position: absolute;
+        }
+    </style>
+    <script>
+
+        function drag_start(event) {
+            var style = window.getComputedStyle(event.target, null);
+            console.log(parseInt(style.getPropertyValue("left")), parseInt(style.getPropertyValue("top")));
+            console.log(event.clientX, event.clientY);
+            console.log('event.target.id=', event.target.id);
+            var str = (parseInt(style.getPropertyValue("left")) - event.clientX) + ',' + (parseInt(style.getPropertyValue("top")) - event.clientY) + ',' + event.target.id;
+            console.log('str=', str);
+            event.dataTransfer.setData("Text", str);
+        }
+
+        function drop(event) {
+            console.log('dropped');
+            console.log('event.dataTransfer=', event.dataTransfer);
+            console.log('event.dataTransfer.getData=', event.dataTransfer.getData("Text"));
+
+
+            var offset = event.dataTransfer.getData("Text").split(',');
+
+            console.log('offset=', offset.toString());
+
+            var dm = document.getElementById(offset[2]); // get the element by ID
+            console.log('dm=', dm);
+
+            dm.style.left = (event.clientX + parseInt(offset[0], 10)) + 'px';
+            console.log('dm.style.left=', dm.style.left);
+
+            dm.style.top = (event.clientY + parseInt(offset[1], 10)) + 'px';
+            console.log('dm.style.top=', dm.style.top);
+
+
+            console.log('---------------------------------------');
+            event.preventDefault();
+            return false;
+        }
+
+        function drag_over(event) {
+
+            event.preventDefault();
+            return false;
+        }
+    </script>
+</head>
+
+<body ondragover="drag_over(event)" ondrop="drop(event)">
+    <div class="content">
+        <div id="div1" draggable="true" ondragover="drag_over(event)" ondragstart="drag_start(event)"> Drag this text</div>
+    </div>
+</body>

@@ -1,0 +1,26 @@
+{
+  "name": "polymer-0.5-zero-hero",
+  "version": "0.0.1",
+  "authors": [
+    "NickWang1980 <NickWang1980@gmail.com>"
+  ],
+  "description": "This is a polymer zero to hero ONLY FOR POLYMER 0.5",
+  "main": "index.html",
+  "license": "woosacase.com",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#0.5",
+    "core-elements": "Polymer/core-elements#~0.5.6",
+    "paper-elements": "Polymer/paper-elements#~0.5.6",
+    "drag-resize": "~0.1.0"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^0.6.0"
+  }
+}

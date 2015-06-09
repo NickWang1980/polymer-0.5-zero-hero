@@ -1,0 +1,218 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/drag-resize/drag-resize.html">
+
+<polymer-element name="polymer-05-zero-hero">
+    <template>
+        <style>
+            /* CSS rules for your element */
+            h3 {
+                font-family: sans-serif;
+                text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+                color: maroon;
+            }
+
+            ul {
+                background: #CFD8DC;
+                color: #000088;
+                font-family: sans-serif;
+                text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+                margin: 10px;
+            }
+
+            input {
+                color: #333;
+                font-family: sans-serif;
+                text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+                margin: 10px;
+            }
+
+            core-icon[icon="android"] {
+                color: #a4c639;
+                width: 32px;
+                height: 32px;
+                box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            }
+
+            paper-button {
+                background: teal;
+                color: lightgray;
+            }
+
+            paper-button::shadow #ripple {
+                color: pink;
+            }
+
+            paper-tabs {
+                background: teal;
+                color: lightgray;
+            }
+
+            paper-tabs::shadow #selectionBar {
+                background-color: purple;
+                width: 10px;
+            }
+
+            paper-tab {
+                font-family: sans-serif;
+                font-size: large;
+                color: lightyellow;
+            }
+
+            paper-tab::shadow #ink {
+                color: pink;
+            }
+
+            .spanShadow {
+                margin: 20px;
+                display: inline-block;
+                padding: 10px;
+            }
+
+        </style>
+
+        <drag-resize></drag-resize>
+
+        <!--DEMO 1: data-binding; icons-->
+
+        <hr>
+        <h3 drag-resize>DEMO 1: data-binding; icons</h3>
+
+        <div class="example" layout vertical>
+            <ul>
+                <template repeat="{{ item in items }}">
+                    <core-icon icon="{{item.iconName}}"></core-icon>
+                    <core-tooltip label="{{item.firstName}}, this is a tool tip from hello-world" position="top">
+                        <h4>{{item.firstName}} {{item.lastName}}</h4>
+                        <labal>iconName:</labal>
+                        <input type="text" value="{{item.iconName}}">
+                    </core-tooltip>
+
+                    <li>
+                        <label>First Name</label>
+                        <input type="text" value="{{item.firstName}}">
+                        <label>Last Name</label>
+                        <input type="text" value="{{item.lastName}}">
+                        <paper-button raised on-click="{{clear}}">clear</paper-button>
+                    </li>
+                </template>
+            </ul>
+        </div>
+
+        <!--DEMO 2: tabs, Shadow -->
+        <h3>DEMO 2: tabs, Shadow</h3>
+
+        <div>
+            <!--<div draggable="{{lockUnlock=='Lock'?true:false}}">-->
+            <div drag-resize>
+                <paper-shadow z="0" id="myshadow" class="spanShadow" animated>
+                    <paper-tabs selected="0">
+                        <paper-tab>demo tab - 1</paper-tab>
+                        <paper-tab>demo tab - 2</paper-tab>
+                        <paper-tab>demo tab - 3</paper-tab>
+                    </paper-tabs>
+                </paper-shadow>
+            </div>
+            <paper-button raised on-click="{{changeShadowZ}}">{{lockUnlock}}</paper-button>
+        </div>
+
+        <!--DEMO 3: Transitions & Animations-->
+        <hr>
+        <h3>DEMO 3: Transitions & Animations</h3>
+
+    </template>
+
+
+    <script>
+        Polymer('polymer-05-zero-hero', {
+
+            changeShadowZ: function () {
+                var border="none";
+                if (this.shadowZ == 0) {
+                    this.lockUnlock = "Lock";
+                    this.shadowZ = 5;
+                    border="groove";
+
+                } else {
+                    this.lockUnlock = "Unlock";
+                    this.shadowZ = 0;
+                    border="none";
+                }
+
+                this.$.myshadow.setZ(this.shadowZ);
+                this.$.myshadow.style.border=border;
+            },
+
+
+            ready: function () {
+                this.lockUnlock = "Unlock";
+                this.shadowZ = 0;
+                this.items = [
+                    {
+                        iconName: '',
+                        firstName: 'World',
+                        lastName: 'Earth'
+                    },
+                    {
+                        iconName: '',
+                        firstName: 'Penny',
+                        lastName: 'YUAN'
+                    },
+                    {
+                        iconName: '',
+                        firstName: 'Nick',
+                        lastName: 'WANG'
+                    }
+                ];
+
+            },
+
+            clear: function (e, detail, sender) {
+                var item = e.target.templateInstance.model.item;
+                item.iconName = "";
+                item.firstName = "";
+                item.lastName = "";
+            }
+
+        });
+
+/*
+        this.addEventListener('drag-start', function (e) {
+            var dragInfo = e.detail;
+            console.log(dragInfo);
+            // flaw #2: e vs dragInfo.event
+            var color = dragInfo.event.target.style.backgroundColor;
+            console.log(color);
+
+            dragInfo.drag = function () {
+                console.log("dragging");
+                console.log(dragInfo);
+            };
+            dragInfo.drop = drop;
+        });
+
+        //
+        function drop(dragInfo) {
+            console.log('dragInfo');
+            console.log(dragInfo);
+
+            var color = dragInfo.avatar.style.borderColor;
+            console.log('color');
+            console.log(color);
+
+            var dropTarget = dragInfo.event.relatedTarget;
+            console.log('dropTarget');
+            console.log(dropTarget);
+
+            var f = dragInfo.framed;
+            var d = document.createElement('div');
+            d.className = 'dropped';
+            d.style.left = f.x - 4 + 'px';
+            d.style.top = f.y - 4 + 'px';
+            d.style.backgroundColor = color;
+            dropTarget.appendChild(d);
+            dropTarget.style.backgroundColor = color;
+        }
+*/
+
+    </script>
+</polymer-element>
